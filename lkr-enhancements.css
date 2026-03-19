@@ -1,0 +1,695 @@
+/* ============================================================
+   LKR & Associates — Enhancement Stylesheet
+   Companion to lkr-associates.html
+   Link: <link rel="stylesheet" href="lkr-enhancements.css">
+   ============================================================ */
+
+/* ── CSS CUSTOM PROPERTIES (extended) ── */
+:root {
+  --gold-glow: rgba(201, 168, 76, 0.35);
+  --gold-glow-strong: rgba(201, 168, 76, 0.6);
+  --transition-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --transition-sharp: cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+/* ============================================================
+   1. CUSTOM CURSOR
+   ============================================================ */
+*, *::before, *::after { cursor: none !important; }
+
+#cursor-dot {
+  position: fixed;
+  top: 0; left: 0;
+  width: 8px; height: 8px;
+  background: var(--gold);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99999;
+  transform: translate(-50%, -50%);
+  transition: width 0.2s, height 0.2s, background 0.2s;
+  mix-blend-mode: difference;
+}
+
+#cursor-ring {
+  position: fixed;
+  top: 0; left: 0;
+  width: 36px; height: 36px;
+  border: 1.5px solid rgba(201, 168, 76, 0.7);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99998;
+  transform: translate(-50%, -50%);
+  transition: width 0.35s var(--transition-smooth),
+              height 0.35s var(--transition-smooth),
+              border-color 0.3s,
+              opacity 0.3s;
+}
+
+#cursor-ring.cursor-hover {
+  width: 60px; height: 60px;
+  border-color: var(--gold);
+  background: rgba(201, 168, 76, 0.06);
+}
+
+#cursor-ring.cursor-click {
+  width: 20px; height: 20px;
+  border-color: var(--gold-light);
+}
+
+/* ============================================================
+   2. SCROLL PROGRESS BAR
+   ============================================================ */
+#scroll-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2px;
+  width: 0%;
+  background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold));
+  background-size: 200% 100%;
+  z-index: 9999;
+  transition: width 0.1s linear;
+  animation: shimmer-progress 3s linear infinite;
+  box-shadow: 0 0 8px var(--gold-glow);
+}
+
+@keyframes shimmer-progress {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ============================================================
+   3. PAGE LOADER
+   ============================================================ */
+#page-loader {
+  position: fixed; inset: 0;
+  background: #000;
+  z-index: 999999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+
+#page-loader.loaded {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.loader-logo {
+  font-family: 'Cinzel', serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--gold);
+  opacity: 0;
+  animation: loaderFadeIn 0.6s ease 0.3s forwards;
+}
+
+@keyframes loaderFadeIn {
+  to { opacity: 1; }
+}
+
+.loader-bar-wrap {
+  width: 200px;
+  height: 1px;
+  background: rgba(201, 168, 76, 0.15);
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+  animation: loaderFadeIn 0.4s ease 0.6s forwards;
+}
+
+.loader-bar {
+  position: absolute;
+  top: 0; left: -100%;
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  animation: loaderSlide 1.2s ease 0.7s forwards;
+}
+
+@keyframes loaderSlide {
+  to { left: 100%; }
+}
+
+.loader-text {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.5em;
+  text-transform: uppercase;
+  color: rgba(201, 168, 76, 0.5);
+  opacity: 0;
+  animation: loaderFadeIn 0.4s ease 0.9s forwards;
+}
+
+/* ============================================================
+   4. MOBILE NAV MENU
+   ============================================================ */
+#mobile-nav-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: none;
+  padding: 6px;
+  z-index: 200;
+  background: none;
+  border: none;
+}
+
+#mobile-nav-toggle span {
+  display: block;
+  width: 26px;
+  height: 1.5px;
+  background: var(--gold);
+  transition: transform 0.4s var(--transition-sharp),
+              opacity 0.3s,
+              width 0.3s;
+  transform-origin: center;
+}
+
+#mobile-nav-toggle.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+#mobile-nav-toggle.open span:nth-child(2) { opacity: 0; width: 0; }
+#mobile-nav-toggle.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+#mobile-nav-drawer {
+  position: fixed;
+  top: 0; right: -100%;
+  width: min(340px, 85vw);
+  height: 100vh;
+  background: #0c0c0c;
+  border-left: 1px solid rgba(201,168,76,0.15);
+  z-index: 150;
+  transition: right 0.5s var(--transition-sharp);
+  display: flex;
+  flex-direction: column;
+  padding: 100px 50px 50px;
+  gap: 0;
+}
+
+#mobile-nav-drawer.open { right: 0; }
+
+#mobile-nav-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(4px);
+  z-index: 140;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s, visibility 0.4s;
+}
+
+#mobile-nav-overlay.open { opacity: 1; visibility: visible; }
+
+.mobile-nav-link {
+  font-family: 'Cinzel', serif;
+  font-size: 1.4rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: rgba(250,250,248,0.6);
+  text-decoration: none;
+  padding: 18px 0;
+  border-bottom: 1px solid rgba(201,168,76,0.08);
+  transition: color 0.3s, padding-left 0.3s;
+  display: block;
+}
+
+.mobile-nav-link:hover {
+  color: var(--gold);
+  padding-left: 12px;
+}
+
+.mobile-nav-cta {
+  margin-top: 40px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--black);
+  background: var(--gold);
+  border: none;
+  padding: 16px 24px;
+  text-decoration: none;
+  display: block;
+  text-align: center;
+  transition: background 0.3s;
+}
+
+.mobile-nav-cta:hover { background: var(--gold-light); }
+
+.mobile-nav-contact {
+  margin-top: auto;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.65rem;
+  color: rgba(201,168,76,0.5);
+  letter-spacing: 0.1em;
+  line-height: 2;
+}
+
+@media (max-width: 900px) {
+  #mobile-nav-toggle { display: flex; }
+}
+
+/* ============================================================
+   5. FLOATING CONTACT WIDGET
+   ============================================================ */
+#float-contact {
+  position: fixed;
+  bottom: 32px; right: 32px;
+  z-index: 500;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+#float-trigger {
+  width: 54px; height: 54px;
+  background: var(--gold);
+  border: none;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem;
+  cursor: none;
+  box-shadow: 0 4px 24px rgba(201,168,76,0.4);
+  transition: transform 0.3s var(--transition-bounce),
+              box-shadow 0.3s;
+  animation: float-pulse 3s ease-in-out infinite;
+}
+
+@keyframes float-pulse {
+  0%, 100% { box-shadow: 0 4px 24px rgba(201,168,76,0.4); }
+  50%       { box-shadow: 0 4px 36px rgba(201,168,76,0.7); }
+}
+
+#float-trigger:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 32px rgba(201,168,76,0.6);
+}
+
+#float-trigger.active { transform: rotate(45deg); }
+
+.float-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-end;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: opacity 0.35s, visibility 0.35s, transform 0.35s var(--transition-smooth);
+}
+
+.float-options.open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.float-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  transition: transform 0.25s var(--transition-bounce);
+}
+
+.float-option:hover { transform: translateX(-4px); }
+
+.float-option-label {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--white);
+  background: rgba(20,20,20,0.95);
+  border: 1px solid rgba(201,168,76,0.2);
+  padding: 8px 14px;
+  white-space: nowrap;
+}
+
+.float-option-icon {
+  width: 42px; height: 42px;
+  background: var(--black-card);
+  border: 1px solid rgba(201,168,76,0.3);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem;
+  transition: background 0.3s;
+}
+
+.float-option:hover .float-option-icon { background: rgba(201,168,76,0.15); }
+
+/* ============================================================
+   6. TOAST NOTIFICATION
+   ============================================================ */
+#toast-container {
+  position: fixed;
+  bottom: 100px; right: 32px;
+  z-index: 9000;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  pointer-events: none;
+}
+
+.toast {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  color: var(--white);
+  background: var(--black-card);
+  border: 1px solid rgba(201,168,76,0.25);
+  border-left: 3px solid var(--gold);
+  padding: 14px 20px;
+  min-width: 240px;
+  max-width: 320px;
+  transform: translateX(120%);
+  opacity: 0;
+  transition: transform 0.4s var(--transition-sharp), opacity 0.4s;
+  pointer-events: all;
+}
+
+.toast.show {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.toast.hide {
+  transform: translateX(120%);
+  opacity: 0;
+}
+
+.toast-title {
+  font-family: 'Cinzel', serif;
+  font-size: 0.7rem;
+  color: var(--gold);
+  margin-bottom: 4px;
+  letter-spacing: 0.1em;
+}
+
+/* ============================================================
+   7. SECTION REVEAL ANIMATIONS (IntersectionObserver)
+   ============================================================ */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s var(--transition-smooth),
+              transform 0.8s var(--transition-smooth);
+}
+
+.reveal.reveal-left {
+  transform: translateX(-40px);
+}
+
+.reveal.reveal-right {
+  transform: translateX(40px);
+}
+
+.reveal.revealed {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+/* Stagger delays for grids */
+.reveal-stagger > *:nth-child(1) { transition-delay: 0s; }
+.reveal-stagger > *:nth-child(2) { transition-delay: 0.1s; }
+.reveal-stagger > *:nth-child(3) { transition-delay: 0.2s; }
+.reveal-stagger > *:nth-child(4) { transition-delay: 0.3s; }
+.reveal-stagger > *:nth-child(5) { transition-delay: 0.4s; }
+.reveal-stagger > *:nth-child(6) { transition-delay: 0.5s; }
+
+/* ============================================================
+   8. ANIMATED COUNTER (numbers count up on scroll)
+   ============================================================ */
+.stat-number {
+  transition: color 0.5s;
+}
+
+.stat-number.counting { color: var(--gold-light); }
+
+/* ============================================================
+   9. GOLD PARTICLE CANVAS (hero background layer)
+   ============================================================ */
+#particle-canvas {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.5;
+}
+
+/* ============================================================
+   10. ACTIVE NAV LINK INDICATOR
+   ============================================================ */
+.nav-links a.active-section {
+  color: var(--gold) !important;
+}
+
+.nav-links a.active-section::after {
+  width: 100% !important;
+}
+
+/* ============================================================
+   11. ENHANCED FORM VALIDATION STYLES
+   ============================================================ */
+.form-input.input-error {
+  border-color: #c0392b !important;
+  animation: shake 0.4s ease;
+}
+
+.form-input.input-valid {
+  border-color: rgba(201,168,76,0.6);
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%       { transform: translateX(-6px); }
+  40%       { transform: translateX(6px); }
+  60%       { transform: translateX(-4px); }
+  80%       { transform: translateX(4px); }
+}
+
+.input-error-msg {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.6rem;
+  color: #e74c3c;
+  letter-spacing: 0.1em;
+  margin-top: 4px;
+  display: none;
+}
+
+.input-error-msg.show { display: block; }
+
+/* ============================================================
+   12. BACK-TO-TOP BUTTON
+   ============================================================ */
+#back-to-top {
+  position: fixed;
+  bottom: 100px; left: 32px;
+  width: 42px; height: 42px;
+  background: rgba(20,20,20,0.9);
+  border: 1px solid rgba(201,168,76,0.3);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem;
+  color: var(--gold);
+  cursor: none;
+  z-index: 500;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: opacity 0.4s, visibility 0.4s,
+              transform 0.4s,
+              background 0.3s, border-color 0.3s;
+}
+
+#back-to-top.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+#back-to-top:hover {
+  background: rgba(201,168,76,0.15);
+  border-color: var(--gold);
+}
+
+/* ============================================================
+   13. PARALLAX HERO TEXT
+   ============================================================ */
+.hero-content {
+  will-change: transform;
+}
+
+/* ============================================================
+   14. GLOWING GOLD HEADINGS ON HOVER
+   ============================================================ */
+.section-title {
+  transition: text-shadow 0.4s;
+}
+
+.section-title:hover {
+  text-shadow: 0 0 40px rgba(201,168,76,0.25);
+}
+
+/* ============================================================
+   15. PRACTICE CARD TILT EFFECT (applied via JS)
+   ============================================================ */
+.practice-card {
+  transition: transform 0.4s ease, background 0.4s, box-shadow 0.4s;
+  transform-style: preserve-3d;
+}
+
+.practice-card:hover {
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5),
+              0 0 30px rgba(201,168,76,0.06);
+}
+
+/* ============================================================
+   16. TYPING CURSOR IN HERO TAGLINE
+   ============================================================ */
+.typed-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1.1em;
+  background: var(--gold);
+  vertical-align: text-bottom;
+  animation: blink-cursor 0.9s step-end infinite;
+  margin-left: 2px;
+}
+
+@keyframes blink-cursor {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+/* ============================================================
+   17. APPOINTMENT SECTION — STEP INDICATOR
+   ============================================================ */
+.appt-steps {
+  display: flex;
+  gap: 0;
+  margin-bottom: 36px;
+}
+
+.appt-step {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+}
+
+.appt-step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 14px; left: 50%;
+  width: 100%;
+  height: 1px;
+  background: rgba(201,168,76,0.15);
+}
+
+.appt-step.active:not(:last-child)::after {
+  background: rgba(201,168,76,0.4);
+}
+
+.step-dot {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  border: 1px solid rgba(201,168,76,0.25);
+  background: var(--black-card);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Cinzel', serif;
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: rgba(201,168,76,0.5);
+  position: relative;
+  z-index: 1;
+  transition: border-color 0.4s, background 0.4s, color 0.4s;
+}
+
+.appt-step.active .step-dot {
+  border-color: var(--gold);
+  background: rgba(201,168,76,0.12);
+  color: var(--gold);
+}
+
+.appt-step.done .step-dot {
+  border-color: var(--gold);
+  background: var(--gold);
+  color: var(--black);
+}
+
+.step-label {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.55rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(201,168,76,0.4);
+  text-align: center;
+}
+
+.appt-step.active .step-label { color: var(--gold); }
+
+/* ============================================================
+   18. NAV SCROLLED STATE
+   ============================================================ */
+nav.scrolled {
+  background: rgba(0,0,0,0.97) !important;
+  border-bottom-color: rgba(201,168,76,0.2) !important;
+  backdrop-filter: blur(12px);
+  transition: background 0.5s, border-bottom-color 0.5s;
+}
+
+/* ============================================================
+   19. FOOTER GOLD GRADIENT HOVER ON LINKS
+   ============================================================ */
+.footer-links a {
+  position: relative;
+  overflow: hidden;
+}
+
+/* ============================================================
+   20. SUBTLE SCANLINE TEXTURE ON HERO
+   ============================================================ */
+.hero::after {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.03) 2px,
+    rgba(0,0,0,0.03) 4px
+  );
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ============================================================
+   21. GOLD NOISE GRAIN OVERLAY
+   ============================================================ */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9990;
+  opacity: 0.4;
+}
+
+/* ============================================================
+   22. RESPONSIVE POLISH
+   ============================================================ */
+@media (max-width: 600px) {
+  #float-contact { bottom: 20px; right: 20px; }
+  #back-to-top { bottom: 80px; left: 20px; }
+  #toast-container { right: 16px; bottom: 80px; }
+}
